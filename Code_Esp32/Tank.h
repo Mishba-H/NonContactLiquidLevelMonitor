@@ -24,4 +24,5 @@ public:
   float getLiquidVolumeLitre();
   float getLiquidPercentage();
   float getFullTankVolumeCm3();
+  float getFullTankVolumeLitre();
 };

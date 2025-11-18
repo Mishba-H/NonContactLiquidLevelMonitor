@@ -65,3 +65,7 @@ float Tank::getLiquidPercentage() {
 float Tank::getFullTankVolumeCm3() {
     return m_tankCrossSectionAreaCm2 * m_tankDepthCm;
 }
+
+float Tank::getFullTankVolumeLitre() {
+  return getFullTankVolumeCm3() * Cm3_To_Litre;
+}

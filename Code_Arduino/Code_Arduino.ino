@@ -1,7 +1,6 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
-#include <DHT_U.h>
 
 // --- RS485 & Serial Configuration ---
 #define RS485_RX_PIN 4
@@ -42,6 +41,7 @@ void setup() {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
   digitalWrite(TRIG_PIN, LOW);
+  beginSerialCommunication();
 }
 
 void loop() {

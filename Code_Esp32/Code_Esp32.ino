@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <SPIFFS.h>
 #include <ArduinoJson.h>
+#include <math.h>
 
 #include "Tank.h"
 #include "Esp32WebServer.h"
@@ -219,15 +220,21 @@ void resetAllConfigsToDefault() {
 
 // --- RS485 Measurement Logic ---
 
+#include <math.h> // Make sure to include math.h for round()
+
 void onReceiveMeasurement(float measuredDistance) {
   tank.updateLiquidLevel(measuredDistance);
 
   // Update LCD in Monitor Mode
   if (currentMode == Monitor) {
     lcd.setCursor(0, 0);
-    String volStr = "Vol: " + String(tank.getLiquidVolumeLitre(), 2) + " L";
+    // Get current and total volumes
+    float currentLitre = tank.getLiquidVolumeLitre();
+    float totalLitre = tank.getFullTankVolumeLitre();
+    long currentVolRounded = round(currentLitre);
+    long totalVolRounded = round(totalLitre);
+    String volStr = "Vol:" + String(currentVolRounded) + "/" + String(totalVolRounded) + "L";
     lcd.print(volStr.c_str());
-    // Pad with spaces to clear previous content
     for (int i = volStr.length(); i < 16; i++) { lcd.print(" "); }
 
     lcd.setCursor(0, 1);
