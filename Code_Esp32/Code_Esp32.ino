@@ -225,23 +225,20 @@ void resetAllConfigsToDefault() {
 void onReceiveMeasurement(float measuredDistance) {
   tank.updateLiquidLevel(measuredDistance);
 
-  // Update LCD in Monitor Mode
-  if (currentMode == Monitor) {
-    lcd.setCursor(0, 0);
-    // Get current and total volumes
-    float currentLitre = tank.getLiquidVolumeLitre();
-    float totalLitre = tank.getFullTankVolumeLitre();
-    long currentVolRounded = round(currentLitre);
-    long totalVolRounded = round(totalLitre);
-    String volStr = "Vol:" + String(currentVolRounded) + "/" + String(totalVolRounded) + "L";
-    lcd.print(volStr.c_str());
-    for (int i = volStr.length(); i < 16; i++) { lcd.print(" "); }
+  lcd.setCursor(0, 0);
+  // Get current and total volumes
+  float currentLitre = tank.getLiquidVolumeLitre();
+  float totalLitre = tank.getFullTankVolumeLitre();
+  long currentVolRounded = round(currentLitre);
+  long totalVolRounded = round(totalLitre);
+  String volStr = "Vol:" + String(currentVolRounded) + "/" + String(totalVolRounded) + "L";
+  lcd.print(volStr.c_str());
+  for (int i = volStr.length(); i < 16; i++) { lcd.print(" "); }
 
-    lcd.setCursor(0, 1);
-    String pctStr = "Level: " + String(tank.getLiquidPercentage(), 1) + "%";
-    lcd.print(pctStr.c_str());
-    for (int i = pctStr.length(); i < 16; i++) { lcd.print(" "); }
-  }
+  lcd.setCursor(0, 1);
+  String pctStr = "Level: " + String(tank.getLiquidPercentage(), 1) + "%";
+  lcd.print(pctStr.c_str());
+  for (int i = pctStr.length(); i < 16; i++) { lcd.print(" "); }
 }
 
 void requestMeasurement() {
@@ -268,7 +265,7 @@ void requestMeasurement() {
       Serial.println("Received: " + response);
 
       if (response.startsWith("D:")) {
-        float distance = response.substring(2).toFloat();
+        float distance = response.substring(2, 6).toFloat();
         onReceiveMeasurement(distance);
       } else if (response.startsWith("E:")) {
         String error = response.substring(2);
